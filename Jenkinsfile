@@ -12,6 +12,7 @@ pipeline {
       }
     }
     stage('trigger deploy production') {
+      agent any
       steps {
         waitUntil() {
           input(message: 'It\'s OK to go live?', id: 'go-live', ok: 'Yes')
