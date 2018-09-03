@@ -1,0 +1,7 @@
+= 测试 Jenkins 如何实现人工触发部署
+
+测试失败，Jenkins 可以使用 `input` 实现人工触发部署，这也是 https://jenkins.io/doc/pipeline/tour/deployment/#asking-for-human-input-to-proceed[官方文档] 中推荐的做法。
+
+但是实践证明，通过 `input` 来实现这样的功能做不到 GoCD 的效果：在等待的过程中，释放 executor 资源；当触发任务时，再获取 executor 资源。
+
+这样的行为导致的问题是，当有很多构建停留在等待 `input` 的时候，Jenkins 会有大量的 executor 无法工作，导致后面的任务阻塞。而在实际项目中，往往不会等到 deploy production，就需要下一次构建，所以，这样的实践是不符合需求的。
