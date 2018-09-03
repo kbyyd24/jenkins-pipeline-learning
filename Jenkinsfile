@@ -7,17 +7,17 @@ pipeline {
       }
     }
     stage('deploy to stagging') {
-      steps {
-        echo 'Deploying to stagging'
-      }
-    }
-    stage('trigger deploy production') {
-      agent any
-      steps {
-        waitUntil() {
-          input(message: 'It\'s OK to go live?', id: 'go-live', ok: 'Yes')
+      parallel {
+        stage('deploy to stagging') {
+          steps {
+            echo 'Deploying to stagging'
+          }
         }
-
+        stage('trigger deploy production') {
+          steps {
+            input(message: 'Is it OK to go live?', id: 'go', ok: 'OK')
+          }
+        }
       }
     }
     stage('deploy to production') {
