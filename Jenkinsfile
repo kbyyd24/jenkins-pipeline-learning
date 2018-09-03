@@ -11,9 +11,14 @@ pipeline {
         echo 'Deploying to stagging'
       }
     }
-    stage('deploying to production') {
+    stage('trigger deploy production') {
       steps {
-        echo 'Deploying to production'
+        input(message: 'It\'s OK to go live?', id: 'go-live', ok: 'Yes')
+      }
+    }
+    stage('deploy to production') {
+      steps {
+        echo 'Deploying to prodocution'
       }
     }
   }
