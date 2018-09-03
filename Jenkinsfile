@@ -13,7 +13,10 @@ pipeline {
     }
     stage('trigger deploy production') {
       steps {
-        input(message: 'It\'s OK to go live?', id: 'go-live', ok: 'Yes')
+        waitUntil() {
+          input(message: 'It\'s OK to go live?', id: 'go-live', ok: 'Yes')
+        }
+
       }
     }
     stage('deploy to production') {
